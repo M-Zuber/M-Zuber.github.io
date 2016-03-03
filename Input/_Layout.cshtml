@@ -1,0 +1,7 @@
+@{
+	Layout = "_Master.cshtml";
+	ViewData["Title"] = @Model.Get("Title", string.Empty);
+}
+<div style="border:10px">
+    @RenderBody()
+</div>
