@@ -19,7 +19,6 @@ install:
 
 build_script:
   - ..\Wyam\Wyam.exe --output ..\Output
-  - ..\Wyam\Wyam.exe --output ..\Output
 
 on_success:
   - del Input\Scripts\jquery-2.1.1-vsdoc.js

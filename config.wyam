@@ -1,25 +1,25 @@
-Packages
-	.Install("Twitter.Bootstrap.Less", "[3.3.5]")
-	.Install("FluentBootstrap.Wyam", true)
-	.Install("jQuery", "[2.1.1]");
+#n Wyam.Modules.Razor -p
+#n Wyam.Modules.Markdown -p
+#n Wyam.Modules.Yaml -p
+#n Twitter.Bootstrap.Less -v 3.3.5
+#n FluentBootstrap.Wyam -p
+#n jQuery -v 2.1.1
 
-Assemblies
-    .Load("System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")
-    .Load("System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
+#an "System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+#an "System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
 
-===
 Pipelines.Add("Content",
-    ReadFiles("*.md"),
-    FrontMatter(Yaml()),
-    Markdown(),
-    Concat(
-        ReadFiles("*.cshtml").Where(x => Path.GetFileName(x)[0] != '_'),
-        FrontMatter(Yaml())		
-    ),
-    Razor(),
-    WriteFiles(".html")
+	ReadFiles("*.md"),
+	FrontMatter(Yaml()),
+	Markdown(),
+	Concat(
+		ReadFiles("*.cshtml"),
+		FrontMatter(Yaml())		
+	),
+	Razor(),
+	WriteFiles(".html")
 );
 
 Pipelines.Add("Resources",
-    CopyFiles("*").Where(x => Path.GetExtension(x) != ".cshtml" && Path.GetExtension(x) != ".md")
+	CopyFiles("**/*{!.cshtml,!.md,!.less,}")
 );
