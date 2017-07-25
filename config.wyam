@@ -1,25 +1,8 @@
-#n Wyam.Modules.Razor -p
-#n Wyam.Modules.Markdown -p
-#n Wyam.Modules.Yaml -p
-#n Twitter.Bootstrap.Less -v 3.3.5
-#n FluentBootstrap.Wyam -p
-#n jQuery -v 2.1.1
+#recipe Blog
 
-#an "System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-#an "System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+// Customize your settings and add new ones here
+// Settings[Keys.Host] = "host.com";
+Settings[BlogKeys.Title] = "Dreams and Adventures";
+Settings[BlogKeys.Description] = "A world of dreams and adventure with code awaits!";
 
-Pipelines.Add("Content",
-	ReadFiles("*.md"),
-	FrontMatter(Yaml()),
-	Markdown(),
-	Concat(
-		ReadFiles("*.cshtml"),
-		FrontMatter(Yaml())		
-	),
-	Razor(),
-	WriteFiles(".html")
-);
-
-Pipelines.Add("Resources",
-	CopyFiles("**/*{!.cshtml,!.md,!.less,}")
-);
+// Add any pipeline customizations here
