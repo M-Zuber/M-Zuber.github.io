@@ -4,12 +4,10 @@ Environment.SetVariableNames();
 
 BuildParameters.SetParameters(context: Context,
                             buildSystem: BuildSystem,
-                            title: "gep13",
-                            repositoryOwner: "gep13",
-                            repositoryName: "gep13",
-                            appVeyorAccountName: "GaryEwanPark",
-                            webHost: "gep13.co.uk",
-                            shouldPurgeCloudflareCache: true);
+                            title: "M-Zuber",
+                            repositoryOwner: "M-Zuber",
+                            repositoryName: "M-Zuber.github.io",
+                            appVeyorAccountName: "M-Zuber");
 
 BuildParameters.PrintParameters(Context);
 
