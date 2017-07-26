@@ -7,8 +7,7 @@ BuildParameters.SetParameters(context: Context,
                             title: "M-Zuber",
                             repositoryOwner: "M-Zuber",
                             repositoryName: "M-Zuber.github.io",
-                            appVeyorAccountName: "M-Zuber",
-                            shouldPurgeCloudflareCache: true);
+                            appVeyorAccountName: "M-Zuber");
 
 BuildParameters.PrintParameters(Context);
 
