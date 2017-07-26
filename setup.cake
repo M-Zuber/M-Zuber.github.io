@@ -7,7 +7,8 @@ BuildParameters.SetParameters(context: Context,
                             title: "M-Zuber",
                             repositoryOwner: "M-Zuber",
                             repositoryName: "M-Zuber.github.io",
-                            appVeyorAccountName: "M-Zuber");
+                            appVeyorAccountName: "M-Zuber",
+                            wyamTheme: "Phantom");
 
 BuildParameters.PrintParameters(Context);
 
