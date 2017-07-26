@@ -4,7 +4,7 @@ branches:
 
 environment:
   access_token:
-    secure: a2/axB9QeFPtz2P0Q1naSwbi8mHzkBpZy3oSTwoQXSboGO4JKFk2ADhSSV1ni/xc
+    secure: Qd4wz0/5Z9kk2P0Z+EepzllpvObMob1xLut2PzObXU9lGBCYtcHOTMqjSicf7oDK
 
 install:
   - mkdir ..\Wyam
