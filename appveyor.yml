@@ -9,7 +9,7 @@ build_script:
 #---------------------------------#
 branches:
   only:
-    - dev
+    - develop
 
 #---------------------------------#
 #  Build Cache                    #
