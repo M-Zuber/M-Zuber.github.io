@@ -6,3 +6,4 @@ Settings[BlogKeys.Title] = "Dreams and Adventures";
 Settings[BlogKeys.Description] = "A world of dreams and adventure with code awaits!";
 
 // Add any pipeline customizations here
+// C:\Users\Mordechai\AppData\Local\Wyam\wyam.cmd  -r Blog -t Phantom -w -p

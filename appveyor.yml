@@ -1,36 +1,55 @@
+# branches:
+#   only:
+#     - dev
+
+# environment:
+#   access_token:
+#     secure: Qd4wz0/5Z9kk2P0Z+EepzllpvObMob1xLut2PzObXU9lGBCYtcHOTMqjSicf7oDK
+
+# install:
+#   - mkdir ..\Wyam
+#   - mkdir ..\Output
+#   # Fetch the latest version of Wyam 
+#   - "curl -s https://raw.githubusercontent.com/Wyamio/Wyam/master/RELEASE -o ..\\Wyam\\wyamversion.txt"
+#   - set /P WYAMVERSION=< ..\Wyam\wyamversion.txt
+#   - echo %WYAMVERSION%
+#   # Get and unzip the latest version of Wyam
+#   - ps: Start-FileDownload "https://github.com/Wyamio/Wyam/releases/download/$env:WYAMVERSION/Wyam-$env:WYAMVERSION.zip" -FileName "..\Wyam\Wyam.zip"
+#   - 7z x ..\Wyam\Wyam.zip -o..\Wyam -r
+
+# build_script:
+#   - ..\Wyam\Wyam.exe --output ..\Output
+
+# on_success:
+#   # Switch branches to gh-pages, clean the folder, copy everything in from the Wyam output, and commit/push
+#   # See http://www.appveyor.com/docs/how-to/git-push for more info
+#   - git config --global credential.helper store
+#   - git config --global user.email "mez613@gmail.com"
+#   - git config --global user.name "Mordechai Zuber"
+#   - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com\n"
+#   - git checkout master
+#   - git rm -rf .
+#   - xcopy ..\Output . /E
+#   - git remote set-url origin https://github.com/M-Zuber/M-Zuber.github.io.git
+#   - git add -A
+#   - git commit -a -m "Commit from AppVeyor"
+#   - git push
+
+#---------------------------------#
+#  Build Script                   #
+#---------------------------------#
+build_script:
+  - ps: .\build.ps1 -Target "AppVeyor" -Experimental
+
+#---------------------------------#
+#        Branches to build        #
+#---------------------------------#
 branches:
   only:
     - dev
 
-environment:
-  access_token:
-    secure: Qd4wz0/5Z9kk2P0Z+EepzllpvObMob1xLut2PzObXU9lGBCYtcHOTMqjSicf7oDK
-
-install:
-  - mkdir ..\Wyam
-  - mkdir ..\Output
-  # Fetch the latest version of Wyam 
-  - "curl -s https://raw.githubusercontent.com/Wyamio/Wyam/master/RELEASE -o ..\\Wyam\\wyamversion.txt"
-  - set /P WYAMVERSION=< ..\Wyam\wyamversion.txt
-  - echo %WYAMVERSION%
-  # Get and unzip the latest version of Wyam
-  - ps: Start-FileDownload "https://github.com/Wyamio/Wyam/releases/download/$env:WYAMVERSION/Wyam-$env:WYAMVERSION.zip" -FileName "..\Wyam\Wyam.zip"
-  - 7z x ..\Wyam\Wyam.zip -o..\Wyam -r
-
-build_script:
-  - ..\Wyam\Wyam.exe --output ..\Output
-
-on_success:
-  # Switch branches to gh-pages, clean the folder, copy everything in from the Wyam output, and commit/push
-  # See http://www.appveyor.com/docs/how-to/git-push for more info
-  - git config --global credential.helper store
-  - git config --global user.email "mez613@gmail.com"
-  - git config --global user.name "Mordechai Zuber"
-  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com\n"
-  - git checkout master
-  - git rm -rf .
-  - xcopy ..\Output . /E
-  - git remote set-url origin https://github.com/M-Zuber/M-Zuber.github.io.git
-  - git add -A
-  - git commit -a -m "Commit from AppVeyor"
-  - git push
+#---------------------------------#
+#  Build Cache                    #
+#---------------------------------#
+cache:
+- tools -> setup.cake
