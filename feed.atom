@@ -4,7 +4,7 @@
 	<id>http://m-zuber.github.io/</id>
 	<title>Dreams and Adventures</title>
 	<rights>2017</rights>
-	<updated>2017-11-23T05:17:10Z</updated>
+	<updated>2017-11-23T05:20:10Z</updated>
 	<subtitle>A world of dreams and adventure with code awaits!</subtitle>
 	<entry>
 		<link href="http://m-zuber.github.io/posts/typescript-enums-with-vue" />
@@ -137,26 +137,5 @@ export default Vue.extend({
 &lt;/code&gt;&lt;/pre&gt;
 </content>
 		<summary>&lt;p&gt;While upgrading a project at work to use the &lt;a href="https://medium.com/the-vue-point/upcoming-typescript-changes-in-vue-2-5-e9bd7e2ecf08"&gt;newest typescript typings for vue&lt;/a&gt;, I ran across an interesting problem.&lt;/p&gt;</summary>
-	</entry>
-	<entry>
-		<link href="http://m-zuber.github.io/posts/api-wrapper-template-1" />
-		<id>http://m-zuber.github.io/posts/api-wrapper-template-1</id>
-		<title>Api wrapper template for Visual Studio. Part 1</title>
-		<updated>2017-07-27T00:00:00Z</updated>
-		<content>&lt;h1 id="part-1"&gt;Part 1&lt;/h1&gt;
-&lt;h2 id="background"&gt;Background&lt;/h2&gt;
-&lt;p&gt;While working a new project of mine, I needed to be pulling data from &lt;a href=""&gt;libraries.io&lt;/a&gt;.
-Unfortunately, there was no C# client available so I decided to &lt;a href=""&gt;nerd-snipe&lt;/a&gt; myself and write my own.
-Since one of the things I excel at is &lt;a href=""&gt;yak shaving&lt;/a&gt;, I decided to create a generic template that can be used anytime someone would want to create a .NET wrapper over an api.&lt;/p&gt;
-&lt;h2 id="getting-started"&gt;Getting started&lt;/h2&gt;
-&lt;p&gt;Step one was to decide on the architecture. Due to my familiarity with &lt;a href=""&gt;octokit.net&lt;/a&gt; - a project which allows you to consume the &lt;a href=""&gt;GitHub api&lt;/a&gt; from .NET projects - and my liking of the architechture, I choose it as my base.
-Starting with deleting anything that could for sure be cut out, I soon had a minimal set of files that could be used as a solid foundation towards achieving my goal.&lt;/p&gt;
-&lt;p&gt;In order to keep up the momentum, I decided to push my inital work up to GitHub (&lt;a href=""&gt;MyrmidonOrg/ApiWrapperTemplate&lt;/a&gt;) and then continue on from there.&lt;/p&gt;
-&lt;p&gt;Additionally I have submitted it to the &lt;a href=""&gt;.NET Summer Hackfest&lt;/a&gt; and hopefully will be able to find some other developers to share the project with.&lt;/p&gt;
-&lt;p&gt;There is a lot to be done going forwards, from making it into an actual Visual Studio template, to allowing full customization when the template is used (instead of the cut, copy, paste that needs to be done now)&lt;/p&gt;
-</content>
-		<summary>&lt;p&gt;While working a new project of mine, I needed to be pulling data from &lt;a href=""&gt;libraries.io&lt;/a&gt;.
-Unfortunately, there was no C# client available so I decided to &lt;a href=""&gt;nerd-snipe&lt;/a&gt; myself and write my own.
-Since one of the things I excel at is &lt;a href=""&gt;yak shaving&lt;/a&gt;, I decided to create a generic template that can be used anytime someone would want to create a .NET wrapper over an api.&lt;/p&gt;</summary>
 	</entry>
 </feed>
