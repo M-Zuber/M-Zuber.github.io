@@ -1,5 +1,5 @@
 Title: Api wrapper template for Visual Studio. Part 1
-Published: 7/27/2017
+Published: 7/27/2018
 Tags: [visualstudio, open source]
 ---
 # Part 1
