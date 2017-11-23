@@ -1,0 +1,220 @@
+﻿
+<!DOCTYPE html>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="en">
+
+	<head>
+		<title>Dreams and Adventures - Using null as a default value in vue.js data</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />		
+        <link href="/assets/css/highlight.css" rel="stylesheet">
+		<!--[if lte IE 8]><script src="/assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="/assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="/assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="/assets/css/ie8.css" /><![endif]-->
+        <link href="/assets/css/override.css" rel="stylesheet" />
+
+		<meta name="description" content="A world of dreams and adventure with code awaits!" />
+		<link type="application/rss+xml" rel="alternate" title="Dreams and Adventures" href="/feed.rss" />
+				<link type="application/atom+xml" rel="alternate" title="Dreams and Adventures" href="/feed.atom" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+		<meta name="application-name" content="Dreams and Adventures" />
+		<meta name="msapplication-tooltip" content="Dreams and Adventures" />
+		<meta name="msapplication-starturl" content="/" />
+
+		<meta property="og:title" content="Dreams and Adventures - Using null as a default value in vue.js data" /> 
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="http://m-zuber.github.io/posts/default-value-in-vue-data" />
+		<!-- TODO: More social graph meta tags -->
+
+        <script src="/assets/js/highlight.pack.js"></script>   
+		
+        
+
+		
+	</head>
+
+	<body>
+		<!-- Wrapper -->
+		<div id="wrapper">
+
+			<!-- Header -->
+			<header id="header">
+				<div class="inner">
+
+					<!-- Logo -->
+					<a href="/" class="logo">
+						<span class="title">Dreams and Adventures</span>
+					</a>
+
+					<!-- Nav -->
+					<nav>
+						<ul>
+							<li><a href="#menu">Menu</a></li>
+						</ul>
+					</nav>
+
+				</div>
+			</header>
+
+			<!-- Menu -->
+			<nav id="menu">
+				<h2>Menu</h2>
+				<ul>
+					        <li><a href="/posts">Archive</a></li>
+        <li><a href="/tags">Tags</a></li>
+        <li><a href="/about">About</a></li>
+
+				</ul>
+			</nav>
+
+			<!-- Main -->
+			<div id="main">
+				<div class="inner">
+
+    
+<header>
+    <h1>Using null as a default value in vue.js data</h1>
+            <p><em>Published on Thursday, November 23, 2017</em></p>
+            <ul class="actions small">
+                    <li><a role="button" href="/tags/typescript" class="button small">typescript</a></li>
+                    <li><a role="button" href="/tags/vuejs" class="button small">vuejs</a></li>
+        </ul>     
+</header>
+
+					
+					<div id="content">
+						
+
+<p>While upgrading a project at work to use the <a href="https://medium.com/the-vue-point/upcoming-typescript-changes-in-vue-2-5-e9bd7e2ecf08">newest typescript typings for vue</a>, I ran across an interesting problem.</p>
+<p>I had the following component (markup ommited to make the code sample smaller):</p>
+<pre><code class="language-ts">import Vue, { ComponentOptions } from 'vue';
+
+enum PaymentType {
+    Check
+    CreditCard
+    Cash
+}
+
+interface AddPayment extends Vue {
+    paymentType: PaymentType;
+    amount: number;
+    checkNumber: string;
+    ccNumber: string;
+}
+export default {
+    name: 'AddPayment',
+    data () {
+        return {
+            paymentType: null,
+            checkNumber: '',
+            ccNumber: '',
+            amount: 0,
+            PaymentType: PaymentType
+        }
+    },
+    computed: {
+        valid() {
+            const basic = +this.amount &gt; 0 &amp;&amp; this.paymentType !== null;
+
+           switch (this.paymentType) {
+				case PaymentType.CreditCard:
+					return basic &amp;&amp; !!(this.ccNumber || '').trim().length;
+				case PaymentType.Check:
+					return basic &amp;&amp; !!(this.checkNumber || '').trim().length;
+				default:
+					return basic;
+			}
+        }
+    }
+} as ComponentOptions&lt;AddPayment&gt;
+</code></pre>
+<p>but once I upgraded to typescript to 2.6.1 and vue to 2.5.8, the compilers first complaint was that <code>Property 'trim' does not exist on type '(() =&gt; any) | ComputedOptions&lt;any&gt;'.</code> so I removed the <code>ComponentOptions</code> and switched from using a plain object to <code>Vue.extend</code></p>
+<p>The next thing I needed to do was a type annotation for the return valu eon the computed property.
+Then the compiler started telling me <code>Type 'PaymentType.CreditCard' is not comparable to type 'null'.</code> and I could not figure out what the issue was.</p>
+<p>After some time I realized that since the default value for <code>this.paymentType</code> was set to null, so I added type annotions on the data object, with the resulting end code.</p>
+<pre><code class="language-ts">import Vue from 'vue';
+
+enum PaymentType {
+    Check
+    CreditCard
+    Cash
+}
+
+export default Vue.extend({
+    name: 'AddPayment',
+    data () {
+        return {
+            paymentType: null as PaymentType | null,
+            checkNumber: '',
+            ccNumber: '',
+            amount: 0,
+            PaymentType: PaymentType
+        }
+    },
+    computed: {
+        valid(): boolean {
+            const basic = +this.amount &gt; 0 &amp;&amp; this.paymentType !== null;
+
+           switch (this.paymentType) {
+				case PaymentType.CreditCard:
+					return basic &amp;&amp; !!(this.ccNumber || '').trim().length;
+				case PaymentType.Check:
+					return basic &amp;&amp; !!(this.checkNumber || '').trim().length;
+				default:
+					return basic;
+			}
+        }
+    }
+})
+
+</code></pre>
+
+
+
+					</div>
+				</div>
+			</div>
+
+			<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+    <section>
+        <h2>Feeds</h2>
+        <ul class="actions small vertical">
+            <li><a href="/feed.rss" class="button small"><i class="fa fa-rss"></i> RSS Feed</a></li>
+                        <li><a href="/feed.atom" class="button small"><i class="fa fa-rss"></i> Atom Feed</a></li>
+        </ul>
+    </section>
+    <section>
+    </section>
+    <ul class="copyright">
+        <li>Copyright © 2017</li>
+        <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+        <li><a href="https://wyam.io">Generated by Wyam</a></li>
+    </ul>
+</div>
+
+			</footer>
+
+		</div>
+		
+		
+
+		<!-- Scripts -->
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="/assets/js/jquery.min.js"></script>
+		<script src="/assets/js/skel.min.js"></script>
+		<script src="/assets/js/util.js"></script>
+		<!--[if lte IE 8]><script src="/assets/js/ie/respond.min.js"></script><![endif]-->
+		<script src="/assets/js/main.js"></script>
+
+	</body>
+
+</html>

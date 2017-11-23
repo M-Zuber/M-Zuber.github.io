@@ -1,11 +1,164 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0">
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
 	<channel>
 		<title>Dreams and Adventures</title>
 		<link>http://m-zuber.github.io/</link>
 		<description>A world of dreams and adventure with code awaits!</description>
 		<copyright>2017</copyright>
-		<pubDate>Wed, 26 Jul 2017 12:41:04 GMT</pubDate>
-		<lastBuildDate>Wed, 26 Jul 2017 12:41:04 GMT</lastBuildDate>
+		<pubDate>Thu, 23 Nov 2017 05:17:10 GMT</pubDate>
+		<lastBuildDate>Thu, 23 Nov 2017 05:17:10 GMT</lastBuildDate>
+		<item>
+			<title>Using typescript enums inside a single file vue component</title>
+			<link>http://m-zuber.github.io/posts/typescript-enums-with-vue</link>
+			<description>&lt;p&gt;If you want to use a &lt;a href="https://www.typescriptlang.org/docs/handbook/enums.html"&gt;typescript enum&lt;/a&gt; as the backing data source for a select element in vue, you need to include the enum itself in the data of the component.&lt;/p&gt;</description>
+			<guid>http://m-zuber.github.io/posts/typescript-enums-with-vue</guid>
+			<pubDate>Thu, 23 Nov 2017 00:00:00 GMT</pubDate>
+			<content:encoded>&lt;p&gt;If you want to use a &lt;a href="https://www.typescriptlang.org/docs/handbook/enums.html"&gt;typescript enum&lt;/a&gt; as the backing data source for a select element in vue, you need to include the enum itself in the data of the component.&lt;/p&gt;
+&lt;p&gt;This would result in code that looks similar to this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-html"&gt;&amp;lt;template&amp;gt;
+  &amp;lt;div&amp;gt;
+      &amp;lt;select v-model=&amp;quot;paymentType&amp;quot;&amp;gt;
+          &amp;lt;option :value=&amp;quot;null&amp;quot;&amp;gt;Select Option&amp;lt;/option&amp;gt;
+          &amp;lt;option :value=&amp;quot;PaymentType.CreditCard&amp;quot;&amp;gt;Credit Card&amp;lt;/option&amp;gt;
+          &amp;lt;option :value=&amp;quot;PaymentType.Cash&amp;quot;&amp;gt;Cash&amp;lt;/option&amp;gt;
+          &amp;lt;option :value=&amp;quot;PaymentType.Check&amp;quot;&amp;gt;Check&amp;lt;/option&amp;gt;
+      &amp;lt;/select&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class="language-ts"&gt;&amp;lt;script&amp;gt;
+import Vue from 'vue';
+
+enum PaymentType {
+    CreditCard,
+    Cash,
+    Check
+}
+
+export default Vue.extend({
+    name: 'PaymentType',
+    data () {
+        return {
+            paymentType: null as PaymentType | null,
+            PaymentType: PaymentType
+        }
+    }
+});
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded>
+		</item>
+		<item>
+			<title>Using null as a default value in vue.js data</title>
+			<link>http://m-zuber.github.io/posts/default-value-in-vue-data</link>
+			<description>&lt;p&gt;While upgrading a project at work to use the &lt;a href="https://medium.com/the-vue-point/upcoming-typescript-changes-in-vue-2-5-e9bd7e2ecf08"&gt;newest typescript typings for vue&lt;/a&gt;, I ran across an interesting problem.&lt;/p&gt;</description>
+			<guid>http://m-zuber.github.io/posts/default-value-in-vue-data</guid>
+			<pubDate>Thu, 23 Nov 2017 00:00:00 GMT</pubDate>
+			<content:encoded>&lt;p&gt;While upgrading a project at work to use the &lt;a href="https://medium.com/the-vue-point/upcoming-typescript-changes-in-vue-2-5-e9bd7e2ecf08"&gt;newest typescript typings for vue&lt;/a&gt;, I ran across an interesting problem.&lt;/p&gt;
+&lt;p&gt;I had the following component (markup ommited to make the code sample smaller):&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-ts"&gt;import Vue, { ComponentOptions } from 'vue';
+
+enum PaymentType {
+    Check
+    CreditCard
+    Cash
+}
+
+interface AddPayment extends Vue {
+    paymentType: PaymentType;
+    amount: number;
+    checkNumber: string;
+    ccNumber: string;
+}
+export default {
+    name: 'AddPayment',
+    data () {
+        return {
+            paymentType: null,
+            checkNumber: '',
+            ccNumber: '',
+            amount: 0,
+            PaymentType: PaymentType
+        }
+    },
+    computed: {
+        valid() {
+            const basic = +this.amount &amp;gt; 0 &amp;amp;&amp;amp; this.paymentType !== null;
+
+           switch (this.paymentType) {
+				case PaymentType.CreditCard:
+					return basic &amp;amp;&amp;amp; !!(this.ccNumber || '').trim().length;
+				case PaymentType.Check:
+					return basic &amp;amp;&amp;amp; !!(this.checkNumber || '').trim().length;
+				default:
+					return basic;
+			}
+        }
+    }
+} as ComponentOptions&amp;lt;AddPayment&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;but once I upgraded to typescript to 2.6.1 and vue to 2.5.8, the compilers first complaint was that &lt;code&gt;Property 'trim' does not exist on type '(() =&amp;gt; any) | ComputedOptions&amp;lt;any&amp;gt;'.&lt;/code&gt; so I removed the &lt;code&gt;ComponentOptions&lt;/code&gt; and switched from using a plain object to &lt;code&gt;Vue.extend&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The next thing I needed to do was a type annotation for the return valu eon the computed property.
+Then the compiler started telling me &lt;code&gt;Type 'PaymentType.CreditCard' is not comparable to type 'null'.&lt;/code&gt; and I could not figure out what the issue was.&lt;/p&gt;
+&lt;p&gt;After some time I realized that since the default value for &lt;code&gt;this.paymentType&lt;/code&gt; was set to null, so I added type annotions on the data object, with the resulting end code.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-ts"&gt;import Vue from 'vue';
+
+enum PaymentType {
+    Check
+    CreditCard
+    Cash
+}
+
+export default Vue.extend({
+    name: 'AddPayment',
+    data () {
+        return {
+            paymentType: null as PaymentType | null,
+            checkNumber: '',
+            ccNumber: '',
+            amount: 0,
+            PaymentType: PaymentType
+        }
+    },
+    computed: {
+        valid(): boolean {
+            const basic = +this.amount &amp;gt; 0 &amp;amp;&amp;amp; this.paymentType !== null;
+
+           switch (this.paymentType) {
+				case PaymentType.CreditCard:
+					return basic &amp;amp;&amp;amp; !!(this.ccNumber || '').trim().length;
+				case PaymentType.Check:
+					return basic &amp;amp;&amp;amp; !!(this.checkNumber || '').trim().length;
+				default:
+					return basic;
+			}
+        }
+    }
+})
+
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded>
+		</item>
+		<item>
+			<title>Api wrapper template for Visual Studio. Part 1</title>
+			<link>http://m-zuber.github.io/posts/api-wrapper-template-1</link>
+			<description>&lt;p&gt;While working a new project of mine, I needed to be pulling data from &lt;a href=""&gt;libraries.io&lt;/a&gt;.
+Unfortunately, there was no C# client available so I decided to &lt;a href=""&gt;nerd-snipe&lt;/a&gt; myself and write my own.
+Since one of the things I excel at is &lt;a href=""&gt;yak shaving&lt;/a&gt;, I decided to create a generic template that can be used anytime someone would want to create a .NET wrapper over an api.&lt;/p&gt;</description>
+			<guid>http://m-zuber.github.io/posts/api-wrapper-template-1</guid>
+			<pubDate>Thu, 27 Jul 2017 00:00:00 GMT</pubDate>
+			<content:encoded>&lt;h1 id="part-1"&gt;Part 1&lt;/h1&gt;
+&lt;h2 id="background"&gt;Background&lt;/h2&gt;
+&lt;p&gt;While working a new project of mine, I needed to be pulling data from &lt;a href=""&gt;libraries.io&lt;/a&gt;.
+Unfortunately, there was no C# client available so I decided to &lt;a href=""&gt;nerd-snipe&lt;/a&gt; myself and write my own.
+Since one of the things I excel at is &lt;a href=""&gt;yak shaving&lt;/a&gt;, I decided to create a generic template that can be used anytime someone would want to create a .NET wrapper over an api.&lt;/p&gt;
+&lt;h2 id="getting-started"&gt;Getting started&lt;/h2&gt;
+&lt;p&gt;Step one was to decide on the architecture. Due to my familiarity with &lt;a href=""&gt;octokit.net&lt;/a&gt; - a project which allows you to consume the &lt;a href=""&gt;GitHub api&lt;/a&gt; from .NET projects - and my liking of the architechture, I choose it as my base.
+Starting with deleting anything that could for sure be cut out, I soon had a minimal set of files that could be used as a solid foundation towards achieving my goal.&lt;/p&gt;
+&lt;p&gt;In order to keep up the momentum, I decided to push my inital work up to GitHub (&lt;a href=""&gt;MyrmidonOrg/ApiWrapperTemplate&lt;/a&gt;) and then continue on from there.&lt;/p&gt;
+&lt;p&gt;Additionally I have submitted it to the &lt;a href=""&gt;.NET Summer Hackfest&lt;/a&gt; and hopefully will be able to find some other developers to share the project with.&lt;/p&gt;
+&lt;p&gt;There is a lot to be done going forwards, from making it into an actual Visual Studio template, to allowing full customization when the template is used (instead of the cut, copy, paste that needs to be done now)&lt;/p&gt;
+</content:encoded>
+		</item>
 	</channel>
 </rss>
