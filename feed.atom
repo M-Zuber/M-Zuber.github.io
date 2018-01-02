@@ -3,49 +3,62 @@
 	<link rel="self" href="http://m-zuber.github.io/" />
 	<id>http://m-zuber.github.io/</id>
 	<title>Dreams and Adventures</title>
-	<rights>2017</rights>
-	<updated>2017-11-23T05:20:10Z</updated>
+	<rights>2018</rights>
+	<updated>2018-01-02T14:19:38Z</updated>
 	<subtitle>A world of dreams and adventure with code awaits!</subtitle>
 	<entry>
-		<link href="http://m-zuber.github.io/posts/typescript-enums-with-vue" />
-		<id>http://m-zuber.github.io/posts/typescript-enums-with-vue</id>
-		<title>Using typescript enums inside a single file vue component</title>
-		<updated>2017-11-23T00:00:00Z</updated>
-		<content>&lt;p&gt;If you want to use a &lt;a href="https://www.typescriptlang.org/docs/handbook/enums.html"&gt;typescript enum&lt;/a&gt; as the backing data source for a select element in vue, you need to include the enum itself in the data of the component.&lt;/p&gt;
-&lt;p&gt;This would result in code that looks similar to this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="language-html"&gt;&amp;lt;template&amp;gt;
-  &amp;lt;div&amp;gt;
-      &amp;lt;select v-model=&amp;quot;paymentType&amp;quot;&amp;gt;
-          &amp;lt;option :value=&amp;quot;null&amp;quot;&amp;gt;Select Option&amp;lt;/option&amp;gt;
-          &amp;lt;option :value=&amp;quot;PaymentType.CreditCard&amp;quot;&amp;gt;Credit Card&amp;lt;/option&amp;gt;
-          &amp;lt;option :value=&amp;quot;PaymentType.Cash&amp;quot;&amp;gt;Cash&amp;lt;/option&amp;gt;
-          &amp;lt;option :value=&amp;quot;PaymentType.Check&amp;quot;&amp;gt;Check&amp;lt;/option&amp;gt;
-      &amp;lt;/select&amp;gt;
-  &amp;lt;/div&amp;gt;
-&amp;lt;/template&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class="language-ts"&gt;&amp;lt;script&amp;gt;
-import Vue from 'vue';
-
-enum PaymentType {
-    CreditCard,
-    Cash,
-    Check
-}
-
-export default Vue.extend({
-    name: 'PaymentType',
-    data () {
-        return {
-            paymentType: null as PaymentType | null,
-            PaymentType: PaymentType
-        }
-    }
-});
-&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-</content>
-		<summary>&lt;p&gt;If you want to use a &lt;a href="https://www.typescriptlang.org/docs/handbook/enums.html"&gt;typescript enum&lt;/a&gt; as the backing data source for a select element in vue, you need to include the enum itself in the data of the component.&lt;/p&gt;</summary>
+		<link href="http://m-zuber.github.io/posts/tomato-soup" />
+		<id>http://m-zuber.github.io/posts/tomato-soup</id>
+		<title>Tomato Soup and Garnish</title>
+		<updated>2018-01-02T00:00:00Z</updated>
+		<content>&lt;h1 id="soup"&gt;Soup&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Heat up some olive oil in a pot.&lt;/li&gt;
+&lt;li&gt;Toss in a bunch of soft tomatoes and/or cherry tomatoes.
+&lt;ul&gt;
+&lt;li&gt;Keep in mind that cherry tomatoes tend to be sweeter than regular ones.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Spice with:
+&lt;ul&gt;
+&lt;li&gt;Salt&lt;/li&gt;
+&lt;li&gt;Black pepper&lt;/li&gt;
+&lt;li&gt;Basil&lt;/li&gt;
+&lt;li&gt;Oregano&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Cook over medium-low heat until there is the desired amount of liquid.
+&lt;ul&gt;
+&lt;li&gt;If you want a smoother soup, it can be blended once finished cooking.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Serve hot with rice, croutons, cheese of any kind, and/or a garnish.&lt;/p&gt;
+&lt;h1 id="garnish"&gt;Garnish&lt;/h1&gt;
+&lt;h2 id="ingredients"&gt;Ingredients&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Onion&lt;/li&gt;
+&lt;li&gt;Garlic&lt;/li&gt;
+&lt;li&gt;Scallions&lt;/li&gt;
+&lt;li&gt;Hot peppers&lt;/li&gt;
+&lt;li&gt;Salt&lt;/li&gt;
+&lt;li&gt;Black pepper&lt;/li&gt;
+&lt;li&gt;Oregano&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="instructions"&gt;Instructions&lt;/h2&gt;
+&lt;p&gt;Mince all the ingredients.&lt;/p&gt;
+&lt;p&gt;
+&lt;img src="../images/tomato-soup-garnish-start.jpg" class="img-responsive"&gt;
+&lt;/p&gt;
+&lt;p&gt;Fry (with no to little oil) until browned.&lt;/p&gt;
+&lt;p&gt;
+&lt;img src="../images/tomato-soup-garnish-done.jpg" class="img-responsive"&gt;
+&lt;/p&gt;
+&lt;h1 id="end-result"&gt;End Result&lt;/h1&gt;
+&lt;p&gt;
+&lt;img src="../images/tomato-soup-served.jpg" class="img-responsive"&gt;
+&lt;/p&gt;</content>
+		<summary>A world of dreams and adventure with code awaits!</summary>
 	</entry>
 	<entry>
 		<link href="http://m-zuber.github.io/posts/default-value-in-vue-data" />
@@ -134,8 +147,47 @@ export default Vue.extend({
     }
 })
 
+&lt;/code&gt;&lt;/pre&gt;</content>
+		<summary>A world of dreams and adventure with code awaits!</summary>
+	</entry>
+	<entry>
+		<link href="http://m-zuber.github.io/posts/typescript-enums-with-vue" />
+		<id>http://m-zuber.github.io/posts/typescript-enums-with-vue</id>
+		<title>Using typescript enums inside a single file vue component</title>
+		<updated>2017-11-23T00:00:00Z</updated>
+		<content>&lt;p&gt;If you want to use a &lt;a href="https://www.typescriptlang.org/docs/handbook/enums.html"&gt;typescript enum&lt;/a&gt; as the backing data source for a select element in vue, you need to include the enum itself in the data of the component.&lt;/p&gt;
+&lt;p&gt;This would result in code that looks similar to this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-html"&gt;&amp;lt;template&amp;gt;
+  &amp;lt;div&amp;gt;
+      &amp;lt;select v-model="paymentType"&amp;gt;
+          &amp;lt;option :value="null"&amp;gt;Select Option&amp;lt;/option&amp;gt;
+          &amp;lt;option :value="PaymentType.CreditCard"&amp;gt;Credit Card&amp;lt;/option&amp;gt;
+          &amp;lt;option :value="PaymentType.Cash"&amp;gt;Cash&amp;lt;/option&amp;gt;
+          &amp;lt;option :value="PaymentType.Check"&amp;gt;Check&amp;lt;/option&amp;gt;
+      &amp;lt;/select&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
-</content>
-		<summary>&lt;p&gt;While upgrading a project at work to use the &lt;a href="https://medium.com/the-vue-point/upcoming-typescript-changes-in-vue-2-5-e9bd7e2ecf08"&gt;newest typescript typings for vue&lt;/a&gt;, I ran across an interesting problem.&lt;/p&gt;</summary>
+&lt;pre&gt;&lt;code class="language-ts"&gt;&amp;lt;script&amp;gt;
+import Vue from 'vue';
+
+enum PaymentType {
+    CreditCard,
+    Cash,
+    Check
+}
+
+export default Vue.extend({
+    name: 'PaymentType',
+    data () {
+        return {
+            paymentType: null as PaymentType | null,
+            PaymentType: PaymentType
+        }
+    }
+});
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;</content>
+		<summary>A world of dreams and adventure with code awaits!</summary>
 	</entry>
 </feed>
