@@ -107,7 +107,7 @@ export default class extends Vue {
 <p>But the caveat is that Vue will treat the type as <code>Object</code> in most cases.
 One place where this can be a problem is when using enums.</p>
 <p>With the following code:</p>
-<pre><code class="language-ts">enum Suites {
+<pre><code class="language-ts">enum Suite {
     Heart = 1,
     Spade = 2,
     Diamond = 3,
@@ -115,18 +115,18 @@ One place where this can be a problem is when using enums.</p>
 }
 
 ...component declaration
-&#64;Prop() suite!: Suites;
+&#64;Prop() suite!: Suite;
 </code></pre>
 <p>You will get type checking inside you file, but at runtime you may encounter the following error
 <code>[Vue warn]: Invalid prop: type check failed for prop &quot;suite&quot;. Expected Object, got Number.</code>.</p>
-<p>This is because under the hood, a typescript enum looks like this (<a href="https://www.typescriptlang.org/play/#src=enum%20Suites%20%7B%0D%0A%20%20%20%20Heart%20%3D%201%2C%0D%0A%20%20%20%20Spade%20%3D%202%2C%0D%0A%20%20%20%20Diamond%20%3D%203%2C%0D%0A%20%20%20%20Club%20%3D%203%0D%0A%7D">ts playground link</a>):</p>
-<pre><code class="language-ts">var Suites;
-(function (Suites) {
-    Suites[Suites[&quot;Heart&quot;] = 1] = &quot;Heart&quot;;
-    Suites[Suites[&quot;Spade&quot;] = 2] = &quot;Spade&quot;;
-    Suites[Suites[&quot;Diamond&quot;] = 3] = &quot;Diamond&quot;;
-    Suites[Suites[&quot;Club&quot;] = 3] = &quot;Club&quot;;
-})(Suites || (Suites = {}));
+<p>This is because under the hood, a typescript enum looks like this (<a href="https://www.typescriptlang.org/play/#src=enum%20Suite%20%7B%0D%0A%20%20%20%20Heart%20%3D%201%2C%0D%0A%20%20%20%20Spade%20%3D%202%2C%0D%0A%20%20%20%20Diamond%20%3D%203%2C%0D%0A%20%20%20%20Club%20%3D%203%0D%0A%7D">ts playground link</a>):</p>
+<pre><code class="language-ts">var Suite;
+(function (Suite) {
+    Suite[Suite[&quot;Heart&quot;] = 1] = &quot;Heart&quot;;
+    Suite[Suite[&quot;Spade&quot;] = 2] = &quot;Spade&quot;;
+    Suite[Suite[&quot;Diamond&quot;] = 3] = &quot;Diamond&quot;;
+    Suite[Suite[&quot;Club&quot;] = 3] = &quot;Club&quot;;
+})(Suite || (Suite = {}));
 </code></pre>
 <p>and when an enum member is passed into the vue component, it thinks it got a number.</p>
 <p>The fix I found was to use the following configuration inside the <code>Prop</code> decorator.</p>
