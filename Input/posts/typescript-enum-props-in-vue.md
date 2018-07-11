@@ -21,7 +21,7 @@ One place where this can be a problem is when using enums.
 
 With the following code:
 ```ts
-enum Suites {
+enum Suite {
     Heart = 1,
     Spade = 2,
     Diamond = 3,
@@ -29,21 +29,21 @@ enum Suites {
 }
 
 ...component declaration
-@Prop() suite!: Suites;
+@Prop() suite!: Suite;
 ```
 
 You will get type checking inside you file, but at runtime you may encounter the following error
 `[Vue warn]: Invalid prop: type check failed for prop "suite". Expected Object, got Number.`.
 
-This is because under the hood, a typescript enum looks like this ([ts playground link](https://www.typescriptlang.org/play/#src=enum%20Suites%20%7B%0D%0A%20%20%20%20Heart%20%3D%201%2C%0D%0A%20%20%20%20Spade%20%3D%202%2C%0D%0A%20%20%20%20Diamond%20%3D%203%2C%0D%0A%20%20%20%20Club%20%3D%203%0D%0A%7D)):
+This is because under the hood, a typescript enum looks like this ([ts playground link](https://www.typescriptlang.org/play/#src=enum%20Suite%20%7B%0D%0A%20%20%20%20Heart%20%3D%201%2C%0D%0A%20%20%20%20Spade%20%3D%202%2C%0D%0A%20%20%20%20Diamond%20%3D%203%2C%0D%0A%20%20%20%20Club%20%3D%203%0D%0A%7D)):
 ```ts
-var Suites;
-(function (Suites) {
-    Suites[Suites["Heart"] = 1] = "Heart";
-    Suites[Suites["Spade"] = 2] = "Spade";
-    Suites[Suites["Diamond"] = 3] = "Diamond";
-    Suites[Suites["Club"] = 3] = "Club";
-})(Suites || (Suites = {}));
+var Suite;
+(function (Suite) {
+    Suite[Suite["Heart"] = 1] = "Heart";
+    Suite[Suite["Spade"] = 2] = "Spade";
+    Suite[Suite["Diamond"] = 3] = "Diamond";
+    Suite[Suite["Club"] = 3] = "Club";
+})(Suite || (Suite = {}));
 ```
 and when an enum member is passed into the vue component, it thinks it got a number.
 
