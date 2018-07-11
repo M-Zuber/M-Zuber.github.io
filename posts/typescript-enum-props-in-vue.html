@@ -8,7 +8,7 @@
 <html lang="en">
 
 	<head>
-		<title>Dreams and Adventures</title>
+		<title>Dreams and Adventures - Setting a prop to typeof enum in vue SFC</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1" />		
         <link href="/assets/css/highlight.css" rel="stylesheet">
@@ -28,9 +28,9 @@
 		<meta name="msapplication-tooltip" content="Dreams and Adventures" />
 		<meta name="msapplication-starturl" content="/" />
 
-		<meta property="og:title" content="Dreams and Adventures" /> 
+		<meta property="og:title" content="Dreams and Adventures - Setting a prop to typeof enum in vue SFC" /> 
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content="http://m-zuber.github.io/" />
+		<meta property="og:url" content="http://m-zuber.github.io/posts/typescript-enum-props-in-vue" />
 		<!-- TODO: More social graph meta tags -->
 
         <script src="/assets/js/highlight.pack.js"></script>   
@@ -78,60 +78,66 @@
 			<div id="main">
 				<div class="inner">
 
-    <header>
-        <h1>A world of dreams and adventure with code awaits!</h1>
-    </header>
+    
+<header>
+    <h1>Setting a prop to typeof enum in vue SFC</h1>
+            <p><em>Published on Tuesday, July 10, 2018</em></p>
+            <ul class="actions small">
+                    <li><a role="button" href="/tags/quick-tips" class="button small">quick tips</a></li>
+                    <li><a role="button" href="/tags/typescript" class="button small">typescript</a></li>
+                    <li><a role="button" href="/tags/vuejs" class="button small">vuejs</a></li>
+        </ul>     
+</header>
 
 					
 					<div id="content">
 						
-<div class="row">
-    <div class="8u 12u$(medium)">
-                <div>
-                    <a href="/posts/typescript-enum-props-in-vue">
-                        <h2>Setting a prop to typeof enum in vue SFC</h2>
-                    </a>
-                    <p>Posted on Tuesday, July 10, 2018</p>
-                    <p><em>Published on Tuesday, July 10, 2018</em></p>             
-                </div>       
-                <div>
-                    <a href="/posts/tomato-soup">
-                        <h2>Tomato Soup and Garnish</h2>
-                    </a>
-                    <p>Posted on Tuesday, January 2, 2018</p>
-                    <p><em>Published on Tuesday, January 2, 2018</em></p>             
-                </div>       
-                <div>
-                    <a href="/posts/typescript-enums-with-vue">
-                        <h2>Using typescript enums inside a single file vue component</h2>
-                    </a>
-                    <p>Posted on Thursday, November 23, 2017</p>
-                    <p><em>Published on Thursday, November 23, 2017</em></p>             
-                </div>       
-    </div>
-    <div class="4u 12u$(medium)">
-        <h5>Tags</h5>
-        <ul class="actions small">
-                <li><a role="button" href="/tags/typescript" class="button small">typescript (3)</a></li>
-                <li><a role="button" href="/tags/vuejs" class="button small">vuejs (3)</a></li>
-                <li><a role="button" href="/tags/quick-tips" class="button small">quick tips (2)</a></li>
-                <li><a role="button" href="/tags/cooking" class="button small">cooking (1)</a></li>
-                <li><a role="button" href="/tags/soups" class="button small">soups (1)</a></li>
-        </ul>
-        <ul class="actions small">
-            <li><a href="/tags" class="button small">View All Tags &rarr;</a></li>
-        </ul>
-        <h5>Older Posts</h5>
-        <ul>
-                <li><a href="/posts/default-value-in-vue-data">Using null as a default value in vue.js data</a></li>
-        </ul>
-        <ul class="actions small">
-            <li><a href="/posts" class="button small">Archive &rarr;</a></li>
-        </ul>
 
-        
-    </div> 
-</div>
+<p>One of the ways to get typescript support inside single file components is to use <a href="https://github.com/vuejs/vue-class-component">vue-class-component</a> together with <a href="https://github.com/kaorun343/vue-property-decorator">vue-property-decorator</a>.</p>
+<p>This enables you to give better typings for your props:</p>
+<pre><code class="language-ts">import { Vue, Prop, Component } from &quot;vue-property-decorator&quot;;
+
+&#64;Component({
+    name: 'MyCoolComponent'
+})
+export default class extends Vue {
+    &#64;Prop() complexType!: ComplexType
+}
+</code></pre>
+<p>But the caveat is that Vue will treat the type as <code>Object</code> in most cases.
+One place where this can be a problem is when using enums.</p>
+<p>With the following code:</p>
+<pre><code class="language-ts">enum Suites {
+    Heart = 1,
+    Spade = 2,
+    Diamond = 3,
+    Club = 3
+}
+
+...component declaration
+&#64;Prop() suite!: Suites;
+</code></pre>
+<p>You will get type checking inside you file, but at runtime you may encounter the following error
+<code>[Vue warn]: Invalid prop: type check failed for prop &quot;suite&quot;. Expected Object, got Number.</code>.</p>
+<p>This is because under the hood, a typescript enum looks like this (<a href="https://www.typescriptlang.org/play/#src=enum%20Suites%20%7B%0D%0A%20%20%20%20Heart%20%3D%201%2C%0D%0A%20%20%20%20Spade%20%3D%202%2C%0D%0A%20%20%20%20Diamond%20%3D%203%2C%0D%0A%20%20%20%20Club%20%3D%203%0D%0A%7D">ts playground link</a>):</p>
+<pre><code class="language-ts">var Suites;
+(function (Suites) {
+    Suites[Suites[&quot;Heart&quot;] = 1] = &quot;Heart&quot;;
+    Suites[Suites[&quot;Spade&quot;] = 2] = &quot;Spade&quot;;
+    Suites[Suites[&quot;Diamond&quot;] = 3] = &quot;Diamond&quot;;
+    Suites[Suites[&quot;Club&quot;] = 3] = &quot;Club&quot;;
+})(Suites || (Suites = {}));
+</code></pre>
+<p>and when an enum member is passed into the vue component, it thinks it got a number.</p>
+<p>The fix I found was to use the following configuration inside the <code>Prop</code> decorator.</p>
+<pre><code class="language-ts">&#64;Prop({ 
+    type: Number,
+    default: null // Use this if the value can be null or undefined
+})
+suite!: Suite;
+</code></pre>
+
+
 
 					</div>
 				</div>

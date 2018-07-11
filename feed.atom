@@ -4,8 +4,58 @@
 	<id>http://m-zuber.github.io/</id>
 	<title>Dreams and Adventures</title>
 	<rights>2018</rights>
-	<updated>2018-01-02T14:19:38Z</updated>
+	<updated>2018-07-11T04:06:24Z</updated>
 	<subtitle>A world of dreams and adventure with code awaits!</subtitle>
+	<entry>
+		<link href="http://m-zuber.github.io/posts/typescript-enum-props-in-vue" />
+		<id>http://m-zuber.github.io/posts/typescript-enum-props-in-vue</id>
+		<title>Setting a prop to typeof enum in vue SFC</title>
+		<updated>2018-07-10T00:00:00Z</updated>
+		<content>&lt;p&gt;One of the ways to get typescript support inside single file components is to use &lt;a href="https://github.com/vuejs/vue-class-component"&gt;vue-class-component&lt;/a&gt; together with &lt;a href="https://github.com/kaorun343/vue-property-decorator"&gt;vue-property-decorator&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This enables you to give better typings for your props:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-ts"&gt;import { Vue, Prop, Component } from "vue-property-decorator";
+
+@Component({
+    name: 'MyCoolComponent'
+})
+export default class extends Vue {
+    @Prop() complexType!: ComplexType
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;But the caveat is that Vue will treat the type as &lt;code&gt;Object&lt;/code&gt; in most cases.
+One place where this can be a problem is when using enums.&lt;/p&gt;
+&lt;p&gt;With the following code:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-ts"&gt;enum Suites {
+    Heart = 1,
+    Spade = 2,
+    Diamond = 3,
+    Club = 3
+}
+
+...component declaration
+@Prop() suite!: Suites;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You will get type checking inside you file, but at runtime you may encounter the following error
+&lt;code&gt;[Vue warn]: Invalid prop: type check failed for prop "suite". Expected Object, got Number.&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This is because under the hood, a typescript enum looks like this (&lt;a href="https://www.typescriptlang.org/play/#src=enum%20Suites%20%7B%0D%0A%20%20%20%20Heart%20%3D%201%2C%0D%0A%20%20%20%20Spade%20%3D%202%2C%0D%0A%20%20%20%20Diamond%20%3D%203%2C%0D%0A%20%20%20%20Club%20%3D%203%0D%0A%7D"&gt;ts playground link&lt;/a&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-ts"&gt;var Suites;
+(function (Suites) {
+    Suites[Suites["Heart"] = 1] = "Heart";
+    Suites[Suites["Spade"] = 2] = "Spade";
+    Suites[Suites["Diamond"] = 3] = "Diamond";
+    Suites[Suites["Club"] = 3] = "Club";
+})(Suites || (Suites = {}));
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and when an enum member is passed into the vue component, it thinks it got a number.&lt;/p&gt;
+&lt;p&gt;The fix I found was to use the following configuration inside the &lt;code&gt;Prop&lt;/code&gt; decorator.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-ts"&gt;@Prop({ 
+    type: Number,
+    default: null // Use this if the value can be null or undefined
+})
+suite!: Suite;
+&lt;/code&gt;&lt;/pre&gt;</content>
+		<summary>A world of dreams and adventure with code awaits!</summary>
+	</entry>
 	<entry>
 		<link href="http://m-zuber.github.io/posts/tomato-soup" />
 		<id>http://m-zuber.github.io/posts/tomato-soup</id>
@@ -58,6 +108,46 @@
 &lt;p&gt;
 &lt;img src="../images/tomato-soup-served.jpg" class="img-responsive"&gt;
 &lt;/p&gt;</content>
+		<summary>A world of dreams and adventure with code awaits!</summary>
+	</entry>
+	<entry>
+		<link href="http://m-zuber.github.io/posts/typescript-enums-with-vue" />
+		<id>http://m-zuber.github.io/posts/typescript-enums-with-vue</id>
+		<title>Using typescript enums inside a single file vue component</title>
+		<updated>2017-11-23T00:00:00Z</updated>
+		<content>&lt;p&gt;If you want to use a &lt;a href="https://www.typescriptlang.org/docs/handbook/enums.html"&gt;typescript enum&lt;/a&gt; as the backing data source for a select element in vue, you need to include the enum itself in the data of the component.&lt;/p&gt;
+&lt;p&gt;This would result in code that looks similar to this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-html"&gt;&amp;lt;template&amp;gt;
+  &amp;lt;div&amp;gt;
+      &amp;lt;select v-model="paymentType"&amp;gt;
+          &amp;lt;option :value="null"&amp;gt;Select Option&amp;lt;/option&amp;gt;
+          &amp;lt;option :value="PaymentType.CreditCard"&amp;gt;Credit Card&amp;lt;/option&amp;gt;
+          &amp;lt;option :value="PaymentType.Cash"&amp;gt;Cash&amp;lt;/option&amp;gt;
+          &amp;lt;option :value="PaymentType.Check"&amp;gt;Check&amp;lt;/option&amp;gt;
+      &amp;lt;/select&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class="language-ts"&gt;&amp;lt;script&amp;gt;
+import Vue from 'vue';
+
+enum PaymentType {
+    CreditCard,
+    Cash,
+    Check
+}
+
+export default Vue.extend({
+    name: 'PaymentType',
+    data () {
+        return {
+            paymentType: null as PaymentType | null,
+            PaymentType: PaymentType
+        }
+    }
+});
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;</content>
 		<summary>A world of dreams and adventure with code awaits!</summary>
 	</entry>
 	<entry>
@@ -147,46 +237,6 @@ export default Vue.extend({
     }
 })
 
-&lt;/code&gt;&lt;/pre&gt;</content>
-		<summary>A world of dreams and adventure with code awaits!</summary>
-	</entry>
-	<entry>
-		<link href="http://m-zuber.github.io/posts/typescript-enums-with-vue" />
-		<id>http://m-zuber.github.io/posts/typescript-enums-with-vue</id>
-		<title>Using typescript enums inside a single file vue component</title>
-		<updated>2017-11-23T00:00:00Z</updated>
-		<content>&lt;p&gt;If you want to use a &lt;a href="https://www.typescriptlang.org/docs/handbook/enums.html"&gt;typescript enum&lt;/a&gt; as the backing data source for a select element in vue, you need to include the enum itself in the data of the component.&lt;/p&gt;
-&lt;p&gt;This would result in code that looks similar to this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="language-html"&gt;&amp;lt;template&amp;gt;
-  &amp;lt;div&amp;gt;
-      &amp;lt;select v-model="paymentType"&amp;gt;
-          &amp;lt;option :value="null"&amp;gt;Select Option&amp;lt;/option&amp;gt;
-          &amp;lt;option :value="PaymentType.CreditCard"&amp;gt;Credit Card&amp;lt;/option&amp;gt;
-          &amp;lt;option :value="PaymentType.Cash"&amp;gt;Cash&amp;lt;/option&amp;gt;
-          &amp;lt;option :value="PaymentType.Check"&amp;gt;Check&amp;lt;/option&amp;gt;
-      &amp;lt;/select&amp;gt;
-  &amp;lt;/div&amp;gt;
-&amp;lt;/template&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class="language-ts"&gt;&amp;lt;script&amp;gt;
-import Vue from 'vue';
-
-enum PaymentType {
-    CreditCard,
-    Cash,
-    Check
-}
-
-export default Vue.extend({
-    name: 'PaymentType',
-    data () {
-        return {
-            paymentType: null as PaymentType | null,
-            PaymentType: PaymentType
-        }
-    }
-});
-&amp;lt;/script&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;</content>
 		<summary>A world of dreams and adventure with code awaits!</summary>
 	</entry>
